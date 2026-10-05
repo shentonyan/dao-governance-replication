@@ -59,3 +59,7 @@ Files in `data/paper_figures/` are measurements or readings of the published art
 - `fig{5,6,7}_digitized.csv`: bar heights measured from the article's Figs 5-7 images (accuracy about +-0.015; see `docs/FIGURE_COMPARISON.md`, section 2).
 - `fig3_segments.csv`: category shares read from the Fig. 3 vector graphic.
 - `fig8_printed_cells.csv`: the 148 correlations printed in Fig. 8 (the article prints only cells with |r| >= 0.1).
+
+## Committed pilot data
+
+`data/silicon/pilot_ballots.csv` holds the 48 ballots of the exploratory LLM-voter pilot (24 induced-value voters per rule; see `docs/EXTENSIONS.md`, section 9). These are not OSF data and contain no personal information; the file name `pilot` marks it as a small, one-off exploration.

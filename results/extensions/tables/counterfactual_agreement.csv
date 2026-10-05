@@ -1,0 +1,9 @@
+round,cond,distinct_winners,modal_winner,aggregators_agreeing_with_modal,n_aggregators,n_ties
+1,quadratic-equal,1,3,7,7,0
+1,quadratic-early,2,3,6,7,0
+1,ranked-equal,1,3,7,7,0
+1,ranked-early,2,3,5,7,0
+2,quadratic-equal,1,4,7,7,0
+2,quadratic-early,1,4,6,6,1
+2,ranked-equal,1,4,7,7,0
+2,ranked-early,1,3,7,7,0
