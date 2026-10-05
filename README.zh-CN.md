@@ -87,6 +87,30 @@ Scientific Reports 16, 11792，DOI：[10.1038/s41598-026-40180-8](https://doi.or
 5. 对 12 个问卷题目做的回归没有多重比较校正；Holm 校正后只有 `Q1_1` 与 `Q2_10` 对投票权重的
    效应仍显著。
 
+## 超出论文的扩展分析（探索性）
+
+复现之后，我用已发布的选票回答论文表格没有回答的问题：各规则给高预算组多大权重、赢家是否随聚合规则改变、二次规则是否改变人们花 token 的方式，
+以及对分配做成分数据处理后结论如何。这些分析是探索性的（每格 18 到 27 人，未做多重比较校正），不是对论文结论的重新检验。
+推导见 [docs/THEORY.zh-CN.md](docs/THEORY.zh-CN.md)，结果与注意事项见 [docs/EXTENSIONS.zh-CN.md](docs/EXTENSIONS.zh-CN.md)（[English](docs/EXTENSIONS.md)）。
+
+* **权力压缩。**当 20% 的选民持有 16 倍预算时，取平方根在理论上把高预算组的有效票份额从 0.8 恰好降到 0.5；
+  在已发布的 20/80 格里，份额从 0.81 到 0.91（token）降到 0.56 到 0.71（sqrt 票），与封闭形式一致。
+* **同样的选票，不同的规则。**七种聚合规则在八个格中的六个给出同一赢家（五个完全一致，一个有一条规则出现严格平局）；第 1 轮的两个 20/80 格里赢家取决于规则。
+* **对二次成本没有行为反应。**两种规则下选票的集中度大致相同（相对集中度指数 0.94，95% 区间 0.72 到 1.23；追求票数最大化的 QV 选民应为 2）。
+* **第 1 轮的投票方式效应不稳健**：取决于零值处理与检验方法；第 2 轮始终为零。
+* **非数据部分：**少数派阈值与女巫拆分的封闭形式；校准过的蒙特卡洛相图；一个小规模 LLM 投票者预实验。
+
+[![七种聚合规则下的获胜选项](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_winner_robustness.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_winner_robustness.png)
+
+[![权力压缩：封闭形式与数据](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_power_compression.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_power_compression.png)
+
+[![不同投票规则下的选票集中度](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_behavioural_invariance.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_behavioural_invariance.png)
+
+[![蒙特卡洛相图](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_phase_diagram.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_phase_diagram.png)
+
+更多图（少数派阈值、女巫拆分、clr 双标图、p 值稳健性、LLM 预实验）见 `results/figures/ext_*.png` 与文档。
+运行：`python scripts\run_extensions.py`（需要 OSF 文件，约 75 秒）。
+
 ## 快速开始（Windows PowerShell）
 
 ```powershell
@@ -122,6 +146,7 @@ python -m spacy download en_core_web_md
 | `results/verification_report.md` | 论文中每个数字与计算值并列 |
 | `results/tables/` | Table 1–3、题目回归、敏感性分析、对比表、图 3/8/9 的诊断表 |
 | `results/figures/` | 图 3–6、8、9（替代）、敏感性图，以及论文与复现的对比图 |
+| `results/extensions/tables/`、`results/figures/ext_*.png` | 扩展分析的表格和图（`scripts/run_extensions.py`） |
 | `data/paper_figures/` | 从论文图 5–7 量出的柱高（约 ±0.015），以及从 PDF 读出的图 3、图 8 数值 |
 
 ## 目录结构
@@ -142,10 +167,21 @@ src/dao_replication/
   verify.py        与论文印刷数字比对
   paper_values.py  从论文转录的数字
   figures.py       图 4–6、敏感性图
+  theory.py        封闭形式：权力份额、少数派阈值、女巫增益、QV/线性基准
+  counterfactual.py  同样的选票上七种聚合规则、自助赢家、实际权力份额
+  behaviour.py     选票集中度、等价性检验、相对集中度指数
+  compositional.py 零值替换、ilr、PERMANOVA、Dirichlet 回归、预算分组比较
+  abm.py           校准的蒙特卡洛相图
+  silicon.py       LLM 投票者预实验的提示词与分析（不调用模型）
+  extensions.py    扩展分析的图
 scripts/run_all.py
-tests/test_reproduction.py
+scripts/run_extensions.py
+tests/test_reproduction.py   tests/test_theory.py   tests/test_extensions_smoke.py
+data/silicon/pilot_ballots.csv   已提交的 LLM 投票者预实验选票
 docs/REPRODUCIBILITY.md   docs/REPRODUCIBILITY.zh-CN.md
 docs/FIGURE_COMPARISON.md docs/FIGURE_COMPARISON.zh-CN.md
+docs/THEORY.md            docs/THEORY.zh-CN.md
+docs/EXTENSIONS.md        docs/EXTENSIONS.zh-CN.md
 ```
 
 ## 需要注意

@@ -84,6 +84,33 @@ it should not be read as the article's clusters. No message text is shown.
 
 Details, numbers and caveats for every figure: [docs/FIGURE_COMPARISON.md](docs/FIGURE_COMPARISON.md).
 
+## Extensions beyond the article (exploratory)
+
+After the reproduction, I used the released ballots for questions the article's tables do not answer: how much weight each rule gives
+the high-budget group, whether winners change with the aggregation rule, whether the quadratic rule changes how people spend tokens,
+and what a compositional treatment of the allocations says. These are exploratory (cells of 18 to 27 voters, no multiplicity correction)
+and are not re-tests of the article's claims. Derivations are in [docs/THEORY.md](docs/THEORY.md), results and caveats in
+[docs/EXTENSIONS.md](docs/EXTENSIONS.md) ([中文](docs/EXTENSIONS.zh-CN.md)).
+
+* **Power compression.** With 20 % of voters holding 16 times the budget, square-root counting cuts the high-budget group's share of effective votes
+  from 0.8 to exactly 0.5 in theory; in the released 20/80 cells it falls from 0.81 to 0.91 (tokens) to 0.56 to 0.71 (sqrt votes), as the closed form predicts.
+* **Same ballots, different rules.** The winner is the same under all seven aggregation rules in six of the eight cells (five unanimous, one with an exact tie under one rule); in round 1 both 20/80 cells are rule dependent.
+* **No behavioural response to the quadratic cost.** Ballots are about equally concentrated under both rules (relative concentration exponent 0.94,
+  95 % CI 0.72 to 1.23; a vote-maximising QV voter would give 2).
+* **Round 1's method effect is not robust** to compositional treatment of zeros and to the choice of test; round 2 is null throughout.
+* **Not data:** closed forms for the minority threshold and for Sybil splitting; a calibrated Monte-Carlo phase diagram; a small LLM-voter pilot.
+
+[![Winning option under seven aggregation rules](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_winner_robustness.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_winner_robustness.png)
+
+[![Power compression: closed form and data](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_power_compression.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_power_compression.png)
+
+[![Ballot concentration by voting rule](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_behavioural_invariance.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_behavioural_invariance.png)
+
+[![Monte-Carlo phase diagram](https://github.com/shentonyan/dao-governance-replication/raw/main/results/figures/ext_phase_diagram.png)](/shentonyan/dao-governance-replication/blob/main/results/figures/ext_phase_diagram.png)
+
+More figures (minority threshold, Sybil splitting, clr biplot, p-value robustness, LLM pilot) are in `results/figures/ext_*.png` and in the docs.
+Run with `python scripts\run_extensions.py` (needs the OSF files; about 75 s).
+
 ## Quick start (Windows PowerShell)
 
 ```powershell
@@ -121,6 +148,7 @@ pandas 3.0, statsmodels 0.15):
 | `results/verification_report.md` | Every article number next to the computed value |
 | `results/tables/` | Table 1-3, item regressions, sensitivity analyses, outcomes, sample sizes |
 | `results/figures/` | Figs 3-6, 8, 9 (substitute), a sensitivity plot, and article-vs-replication comparisons (`*_paper_layout_pair`, `*_compare_panels`, `agreement_figs5_7`, `fig4_compare`) |
+| `results/extensions/tables/` and `results/figures/ext_*.png` | Tables and figures of the extension analyses (`scripts/run_extensions.py`) |
 | `data/paper_figures/` | Bar heights measured from the article's Figs 5-7 (about +-0.015) |
 
 ## Layout
@@ -141,10 +169,21 @@ src/dao_replication/
   digitize.py      optional: measure bar heights from the article's images
   paper_extract.py optional: read Fig. 3 / Fig. 8 numbers from the article PDF
   fig3.py fig8.py fig9.py   Figs 3, 8, 9 (re-plot / attempt / substitute)
+  theory.py        closed forms: power share, minority threshold, Sybil gain, QV/linear benchmarks
+  counterfactual.py  seven aggregation rules on the same ballots, bootstrap winners, realised power share
+  behaviour.py     ballot concentration, equivalence checks, relative concentration exponent
+  compositional.py zero replacement, ilr, PERMANOVA, Dirichlet regression, budget-group comparison
+  abm.py           calibrated Monte-Carlo phase diagram
+  silicon.py       prompts and analysis for the LLM-voter pilot (no model calls)
+  extensions.py    figures for the extension analyses
 scripts/run_all.py
-tests/test_reproduction.py
+scripts/run_extensions.py
+tests/test_reproduction.py   tests/test_theory.py   tests/test_extensions_smoke.py
+data/silicon/pilot_ballots.csv   committed LLM-voter pilot ballots
 docs/REPRODUCIBILITY.md   docs/REPRODUCIBILITY.zh-CN.md
 docs/FIGURE_COMPARISON.md docs/FIGURE_COMPARISON.zh-CN.md
+docs/THEORY.md            docs/THEORY.zh-CN.md
+docs/EXTENSIONS.md        docs/EXTENSIONS.zh-CN.md
 ```
 
 ## Caveats

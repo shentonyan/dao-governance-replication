@@ -57,3 +57,7 @@ Get-FileHash data\raw\*.csv -Algorithm SHA256
   `docs/FIGURE_COMPARISON.zh-CN.md` 第 2 节）。
 - `fig3_segments.csv`：从图 3 矢量图形读出的各段比例。
 - `fig8_printed_cells.csv`：图 8 中印出的 148 个相关系数（论文只印 |r| ≥ 0.1 的格子）。
+
+## 已提交的预实验数据
+
+`data/silicon/pilot_ballots.csv` 是探索性 LLM 投票者预实验的 48 张选票（每种规则 24 个诱导价值投票者；见 `docs/EXTENSIONS.zh-CN.md` 第 9 节）。它不是 OSF 数据，不含任何个人信息；文件名中的 `pilot` 表示这是一次小规模的一次性探索。
